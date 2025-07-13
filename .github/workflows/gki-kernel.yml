@@ -56,7 +56,7 @@ on:
       onlyAk3:
         required: true
         type: boolean
-        default: false
+        default: true
 jobs:
   build-kernel-kernelsu-susfs:
     runs-on: ubuntu-latest
@@ -558,7 +558,7 @@ jobs:
           # 如果你需要改构建时间,请把以下变量 CURRENT_TIME 修改为如下例子字符串,如以下例子:
           # CURRENT_TIME="Sat Jun 07 06:29:29 UTC 2025"
           # 该字符串表示 UTC时间: 2025年6月7日 06:29:29,"Sat" 是星期六的缩写，而 "Jun" 是六月的缩写
-          CURRENT_TIME=$(date -u +"%a %b %d %H:%M:%S UTC %Y")
+          CURRENT_TIME=$(TZ=Asia/Shanghai date +"%a %b %d %H:%M:%S %Z %Y")
           echo "CURRENT_TIME=$CURRENT_TIME"
 
           # 设置构建时间为上方的 `CURRENT_TIME` 变量 (5系)
