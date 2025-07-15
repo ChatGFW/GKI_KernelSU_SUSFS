@@ -33,6 +33,29 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+      - name: 🧐 Debug Workflow Caller Context
+        run: |
+          echo "==================== DEBUG CONTEXT ===================="
+          echo " "
+          echo "EVENT NAME: ${{ github.event_name }}"
+          echo " "
+          echo "--- CALLER INFORMATION ---"
+          echo "  - Caller Repository: ${{ github.caller_repository }}"
+          echo "  - Caller Workflow:   ${{ github.caller_workflow }}"
+          echo "  - Caller User:       ${{ github.triggering_actor }}"
+          echo " "
+          echo "--- WORKFLOW & JOB INFORMATION ---"
+          echo "  - Current Workflow:  ${{ github.workflow }}"
+          echo "  - Current Job ID:    ${{ github.job }}"
+          echo "  - Current Run ID:    ${{ github.run_id }}"
+          echo "  - Current Run Number:${{ github.run_number }}"
+          echo " "
+          echo "--- GIT REFERENCE INFORMATION ---"
+          echo "  - Git Ref:           ${{ github.ref }}"
+          echo "  - Ref Type:          ${{ github.ref_type }}"
+          echo " "
+          echo "======================================================="
+          
       - name: 安装依赖
         run: sudo apt update && sudo apt upgrade -y && sudo apt install -y git curl jq
 
@@ -162,8 +185,19 @@ jobs:
           # 下载 Manager 文件
           curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -o "$NAME" "$DOWNLOAD_URL"
           echo "$NAME 文件已下载.zip"
-          mkdir -p susfs-module && unzip *.zip -d susfs-module
+          
+          
+          echo "正在检查调用者: ${{ github.caller_workflow }}"
 
+          # 由用户调用或是由作者上传到release?
+
+          if [ "${{ github.workflow }}" == "测试发布" ]; then
+            echo "这是测试发布工作流"
+            mkdir -p susfs-module && mv $NAME susfs-module
+          else
+            echo "这是其他工作流"
+            mkdir -p susfs-module && unzip *.zip -d susfs-module
+          fi
 
       - name: Notify on failure
         if: steps.add_KSU.outcome == 'failure'

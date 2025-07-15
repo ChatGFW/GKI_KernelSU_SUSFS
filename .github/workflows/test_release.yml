@@ -155,15 +155,15 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.ZZH_TOKEN }}
       RELEASE_NAME: "GKI内核: ${{ inputs.kernelsu_variant == 'Next' && 'KernelSU-' || '' }}${{ inputs.kernelsu_variant }}(${{ needs.get_manager.outputs.ksuVer }})  & SUSFS ${{ needs.get_manager.outputs.susVer }}"
       RELEASE_NOTES: |
-        此发布包含 **${{ inputs.kernelsu_variant == 'Next' && 'KernelSU' || '' }}${{ inputs.kernelsu_variant }},请注意此处的KSU版本** SUSFS ${{ needs.get_manager.outputs.susVer }} ${{ inputs.use_zram && '、LZ4KD' || '' }}
+        此处包含：**${{ inputs.kernelsu_variant == 'Next' && 'KernelSU-' || '' }}${{ inputs.kernelsu_variant }}**、SUSFS ${{ needs.get_manager.outputs.susVer }} ${{ inputs.use_zram && '、LZ4KD' || '' }}
 
         功能:
-        -> ${{ inputs.kernelsu_variant == 'Next' && 'KernelSU-' || '' }}${{ inputs.kernelsu_variant }}-${{ inputs.kernelsu_variant == 'Official' && '原版' || '' }} ${{ inputs.kernelsu_branch == 'Dev(开发)' && format('({0})', needs.get_manager.outputs.ksuVer) || '稳定版' }}
+        -> ${{ inputs.kernelsu_variant == 'Next' && 'KernelSU-' || '' }}${{ inputs.kernelsu_variant }}${{ inputs.kernelsu_variant == 'Official' && '原版' || '' }}${{ inputs.kernelsu_branch == 'Dev(开发)' && format('({0})', needs.get_manager.outputs.ksuVer) || '稳定版' }}
         -> SUSFS ඞ ${{ needs.get_manager.outputs.susVer }}
         -> 最小作用域手动挂钩 v1.4
         ${{ inputs.kernelsu_variant != 'Official' && '-> Magic Mount 支持' || '-> OVERLAYFS 支持' }}
-        -> 简单隐藏 LineageOS 检测
-        -> 徒劳隐藏 jit-zygote-cache 检测
+        -> LineageOS 检测对抗
+        -> jit-zygote-cache 检测对抗
         -> Wireguard 支持
         -> BBR 支持
         ${{ inputs.use_kpm && '-> KPM 支持' || '' }}
@@ -320,7 +320,7 @@ jobs:
           echo "<summary>提交信息</summary>" >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           echo "提交的哈希值与链接(以下提交指的是,本次编译时,KSU或SUSFS所在的进度):" >> $GITHUB_ENV
-          echo "- **KernelSU为${{ inputs.kernelsu_variant }}-${{ inputs.kernelsu_branch }}** (提交): [$KSU_REF]($KSU_URL)" >> $GITHUB_ENV
+          echo "- **KernelSU为${{ inputs.kernelsu_variant == 'Next' && 'KernelSU-' || '' }}${{ inputs.kernelsu_variant }}${{ inputs.kernelsu_branch == 'Dev(开发)' && format('({0})', needs.get_manager.outputs.ksuVer) || '稳定版' }}** (提交): [$KSU_REF]($KSU_URL)" >> $GITHUB_ENV
           echo "- **SUSFS4KSU** (提交):" >> $GITHUB_ENV
           echo "  - gki-android12-5.10: [$COMMIT_HASH_gki_android12_5_10]($COMMIT_URL_gki_android12_5_10)" >> $GITHUB_ENV
           echo "  - gki-android13-5.10: [$COMMIT_HASH_gki_android13_5_10]($COMMIT_URL_gki_android13_5_10)" >> $GITHUB_ENV
@@ -330,7 +330,8 @@ jobs:
           echo "  - gki-android15-6.6: [$COMMIT_HASH_gki_android15_6_6]($COMMIT_URL_gki_android15_6_6)" >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           echo "</details>" >> $GITHUB_ENV
-          echo "点击下方【Assets】展开资源,底部还包含最新KSU管理器、CI构建SUSFS模块" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "点击下方 **【Assets】** 展开资源,底部还包含最新 **KSU管理器、CI构建SUSFS模块 **" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           
       # Get the Latest Tag from GitHub
@@ -387,7 +388,7 @@ jobs:
         run: |
             echo "Uploading KSU管理器"
             gh release upload ${{ env.NEW_TAG }} "./downloaded-artifacts/*Manager*/*"
-            gh release upload ${{ env.NEW_TAG }} "./downloaded-artifacts/susfs-*.zip"
+            gh release upload ${{ env.NEW_TAG }} "./downloaded-artifacts/susfs-*/*"
 
       - name: 动态上传发布资产
         run: |
