@@ -47,11 +47,15 @@
 
 </details>
 
-### KSU管理器
-在编译完成后，你会看到类似 `Next-Manager(12600)`的文件，简单来说这就是与内核一同上传的***最新管理器***。
-![例子](./assets/get_manager.gif)
-同样的，在[Release](https://github.com/zzh20188/GKI_KernelSU_SUSFS/releases)也同样包含***最新管理器***！
-![release](./assets/release_manager.gif)
+### KSU管理器 & SUSFS模块
+#### 在编译完成后，你会看到类似 `SukiSU-Manager(13235)` 和 `susfs-release-1.5.2+_537cdba` 的压缩包，简单来说这就是与内核一同上传的***最新管理器与susfs模块***。
+
+![例子](./assets/action.png)
+
+#### 同样的，在[Release](https://github.com/zzh20188/GKI_KernelSU_SUSFS/releases)的底部也同样包含它们
+
+![release](./assets/release.png)
+#### 由于SUKISU内置SUSFS功能未完善完美，仍建议使用SUS模块！
 
 ### 紧急救援指南
 

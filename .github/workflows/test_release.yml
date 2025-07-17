@@ -331,7 +331,7 @@ jobs:
           echo "" >> $GITHUB_ENV
           echo "</details>" >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
-          echo "点击下方 **【Assets】** 展开资源,底部还包含最新 **KSU管理器、CI构建SUSFS模块 **" >> $GITHUB_ENV
+          echo "点击下方 **【Assets】** 展开资源,底部还包含最新 **KSU管理器、CI构建SUSFS模块** " >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
           
       # Get the Latest Tag from GitHub
