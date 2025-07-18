@@ -57,7 +57,7 @@ jobs:
           echo "======================================================="
           
       - name: 安装依赖
-        run: sudo apt update && sudo apt upgrade -y && sudo apt install -y git curl jq
+        run: sudo apt install -y git curl jq
 
       - name: 获取 KSU & SUSFS 版本
         id: get_version

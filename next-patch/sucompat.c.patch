@@ -1,8 +1,18 @@
 diff --git a/kernel/sucompat.c b/kernel/sucompat.c
-index b092373f..00d8a8c5 100644
+index 11c7fd17..0ec19dd6 100644
 --- a/kernel/sucompat.c
 +++ b/kernel/sucompat.c
-@@ -46,37 +46,37 @@ static inline void __user *userspace_stack_buffer(const void *d, size_t len)
+@@ -13,6 +13,9 @@
+ #else
+ #include <linux/sched.h>
+ #endif
++#ifdef CONFIG_KSU_SUSFS_SUS_SU
++#include <linux/susfs_def.h>
++#endif
+ 
+ #include "objsec.h"
+ #include "allowlist.h"
+@@ -43,37 +46,37 @@ static inline void __user *userspace_stack_buffer(const void *d, size_t len)
  	return copy_to_user(p, d, len) ? NULL : p;
  }
  
@@ -48,7 +58,7 @@ index b092373f..00d8a8c5 100644
  	ksu_strncpy_from_user_nofault(path, *filename_user, sizeof(path));
  
  	if (unlikely(!memcmp(path, su, sizeof(su)))) {
-@@ -87,27 +87,48 @@ int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode,
+@@ -84,27 +87,49 @@ int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode,
  	return 0;
  }
  
@@ -91,7 +101,7 @@ index b092373f..00d8a8c5 100644
  	if (unlikely(!filename_user)) {
  		return 0;
  	}
--
+ 
 +#ifdef CONFIG_KSU_SUSFS_SUS_SU
 +	char path[sizeof(su)] = {0};
 +#else
@@ -101,12 +111,11 @@ index b092373f..00d8a8c5 100644
  // Remove this later!! we use syscall hook, so this will never happen!!!!!
  #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 18, 0) && 0
  	// it becomes a `struct filename *` after 5.18
-@@ -174,8 +195,12 @@ int ksu_handle_execve_sucompat(int *fd, const char __user **filename_user,
+@@ -171,8 +196,11 @@ int ksu_handle_execve_sucompat(int *fd, const char __user **filename_user,
  			       void *__never_use_argv, void *__never_use_envp,
  			       int *__never_use_flags)
  {
 -	const char su[] = SU_PATH;
-+	//const char su[] = SU_PATH;
 +#ifdef CONFIG_KSU_SUSFS_SUS_SU
 +	char path[sizeof(su)] = {0};
 +#else
@@ -115,7 +124,7 @@ index b092373f..00d8a8c5 100644
  
  #ifndef CONFIG_KSU_KPROBES_HOOK
  	if (!ksu_sucompat_non_kp) {
-@@ -185,8 +210,9 @@ int ksu_handle_execve_sucompat(int *fd, const char __user **filename_user,
+@@ -182,8 +210,9 @@ int ksu_handle_execve_sucompat(int *fd, const char __user **filename_user,
  
  	if (unlikely(!filename_user))
  		return 0;

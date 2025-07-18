@@ -8,10 +8,7 @@
 > 
 > 最近更新：
 > 
-> 1. 修复next编译报错
-> 2. 优化获取KSU管理器功能（已稳定不报错），并额外获取最新sus模块
-> 3. Release 优化自动获取KSU版本和SUSFS版本，减少维护成本
-> 4. 挖坑，之后可能出一个一加仓库...
+> 1. 如果KSU-NEXT显示未安装，请下载[KSU_Next_v1.0.9_12797](https://github.com/KernelSU-Next/KernelSU-Next/releases/download/v1.0.9/KernelSU_Next_v1.0.9_12797-release.apk)这个版本的管理器安装包！
 
 ### Tips
 1. 关于安全补丁
